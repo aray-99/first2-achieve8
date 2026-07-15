@@ -2,6 +2,7 @@
 
 :root { --ink:#191a17; --paper:#f3f1e9; --card:#fbfaf5; --lime:#c8ef45; --orange:#ff6a35; --muted:#77786f; --line:#d8d6cc; }
 * { box-sizing:border-box; }
+[hidden] { display:none !important; }
 body { margin:0; background:var(--paper); color:var(--ink); font-family:'Noto Sans JP',sans-serif; }
 button,input,select,textarea { font:inherit; }
 button { cursor:pointer; }

@@ -35,7 +35,12 @@ function demoTasks(){
   ];
 }
 
-if(!localStorage.getItem(STORAGE_KEY)){ tasks=demoTasks(); save(); }
+//既に試したユーザーにも一度だけデモを追加する、軽量なデータマイグレーション。
+if(!localStorage.getItem('first2-demo-seeded-v1')){
+  tasks=[...tasks,...demoTasks()];
+  localStorage.setItem('first2-demo-seeded-v1','true');
+  save();
+}
 
 function updatePreview(){
   const start=$('#startDate').value, end=$('#deadline').value, hours=Number($('#hours').value)||0;

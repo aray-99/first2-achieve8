@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f2eb" />
+    <title>FIRST 2 / ACHIEVE 8</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="ホーム">
+          <span class="brand-mark"><i></i><i></i><i></i></span>
+          <span>FIRST 2<br /><b>ACHIEVE 8</b></span>
+        </a>
+        <nav class="view-switch" aria-label="表示切り替え">
+          <button class="view-tab active" data-view="tasks">LIST</button>
+          <button class="view-tab" data-view="calendar">CALENDAR</button>
+        </nav>
+        <div class="date-chip" id="today"></div>
+        <button class="primary-button" id="openTaskModal"><span>＋</span> 新しいタスク</button>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div>
+            <p class="eyebrow">TIME MANAGEMENT METHOD</p>
+            <h1>最初の<span>2割</span>で、<br /><em>8割</em>を終わらせる。</h1>
+            <p class="hero-copy">締切までの時間を自動で設計。最初に一気に形にして、<br />残りの時間を「より良くする」ために使おう。</p>
+          </div>
+          <div class="method-graphic" aria-label="最初の20%で80%を達成するメソッド">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="big-number">80<span>%</span></div>
+            <p>DONE AT<br /><b>20% TIME</b></p>
+          </div>
+        </section>
+
+        <section class="command-center" id="commandCenter">
+          <div class="command-label"><p class="eyebrow">TODAY'S COMMAND</p><h2>今日の最短ルート</h2><span id="todayLoad"></span></div>
+          <div class="focus-recommendation" id="focusRecommendation"></div>
+          <div class="signal-panel" id="signalPanel"></div>
+        </section>
+
+        <section class="dashboard-head" id="dashboardHead">
+          <div>
+            <p class="eyebrow">YOUR SCHEDULE</p>
+            <h2>実行プラン</h2>
+          </div>
+          <div class="stats" id="stats"></div>
+        </section>
+
+        <section class="task-grid" id="taskGrid"></section>
+
+        <section class="empty-state" id="emptyState" hidden>
+          <div class="empty-icon">↗</div>
+          <h3>最初のタスクを設計しよう</h3>
+          <p>締切と見積時間を入れるだけで、80%完成日と作業配分を自動計算します。</p>
+          <button class="primary-button" id="emptyAdd">＋ タスクを追加</button>
+        </section>
+
+        <section class="calendar-view" id="calendarView" hidden>
+          <div class="calendar-toolbar">
+            <div class="calendar-title"><button id="prevMonth" aria-label="前月">←</button><h2 id="calendarMonth"></h2><button id="nextMonth" aria-label="翌月">→</button></div>
+            <div class="calendar-legend"><span><i class="legend-focus"></i> 80%までの集中期間</span><span><i class="legend-polish"></i> 磨き上げ期間</span><span><i class="legend-event"></i> 既存の予定（デモ）</span></div>
+          </div>
+          <div class="integration-note">
+            <div><span class="integration-icon">↗</span><p><b>空き時間を見つけて、自動で配置</b><br>現在はデモ予定を避けて表示しています。外部カレンダー連携は次のステップです。</p></div>
+            <div class="integration-badges"><span>G</span> Google Calendar <span>N</span> Notion Calendar <em>COMING SOON</em></div>
+          </div>
+          <div class="weekdays"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span></div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </section>
+      </main>
+
+      <footer><span>FIRST 2 / ACHIEVE 8</span><p>Start fast. Finish better.</p></footer>
+    </div>
+
+    <dialog id="taskModal">
+      <form id="taskForm" method="dialog">
+        <div class="modal-head">
+          <div><p class="eyebrow">NEW PROJECT</p><h2>タスクを設計する</h2></div>
+          <button type="button" class="icon-button" id="closeModal" aria-label="閉じる">×</button>
+        </div>
+        <label>タスク名<input id="taskName" name="name" required maxlength="60" placeholder="例：企画書を完成させる" /></label>
+        <div class="form-row">
+          <label>開始日<input id="startDate" name="startDate" type="date" required /></label>
+          <label>締切<input id="deadline" name="deadline" type="date" required /></label>
+        </div>
+        <div class="form-row">
+          <label>見積作業時間<input id="hours" name="hours" type="number" required min="1" max="1000" value="10" /><span class="input-suffix">時間</span></label>
+          <label>優先度<select id="priority" name="priority"><option value="high">高い</option><option value="medium" selected>普通</option><option value="low">低い</option></select></label>
+        </div>
+        <label>メモ（任意）<textarea id="notes" name="notes" rows="3" placeholder="完成条件や、最初に着手すること"></textarea></label>
+        <div class="method-preview" id="methodPreview"></div>
+        <button class="submit-button" type="submit">このプランで始める <span>→</span></button>
+      </form>
+    </dialog>
+
+    <dialog id="progressModal" class="progress-dialog">
+      <form id="progressForm" method="dialog">
+        <div class="modal-head"><div><p class="eyebrow">UPDATE</p><h2 id="progressTitle">進捗を更新</h2></div><button type="button" class="icon-button" id="closeProgress">×</button></div>
+        <div class="range-value"><strong id="rangeValue">0</strong><span>%</span></div>
+        <input type="range" id="progressRange" min="0" max="100" step="5" />
+        <div class="range-labels"><span>START</span><span>80% LINE</span><span>DONE</span></div>
+        <button class="submit-button" type="submit">進捗を保存する <span>→</span></button>
+      </form>
+    </dialog>
+
+    <template id="taskTemplate">
+      <article class="task-card">
+        <div class="card-top"><span class="priority"></span><button class="menu-button" aria-label="タスクを削除">×</button></div>
+        <h3 class="task-title"></h3><p class="task-note"></p>
+        <div class="phase-block">
+          <div class="phase-header"><div><span>PHASE 01</span><b>一気に形にする</b></div><strong class="phase-one-hours"></strong></div>
+          <div class="phase-dates"><span class="start-label"></span><i>→</i><span class="checkpoint-label"></span></div>
+          <div class="bar"><span class="bar-fill"></span><i class="checkpoint-pin">80</i></div>
+          <p class="phase-message"></p>
+        </div>
+        <div class="phase-two"><div><span>PHASE 02</span><b>磨き上げる</b></div><strong class="phase-two-hours"></strong></div>
+        <div class="deadline-row"><span>FINAL DEADLINE</span><b class="deadline-label"></b></div>
+        <button class="progress-button">進捗を更新 <span>→</span></button>
+      </article>
+    </template>
+    <script src="app.js"></script>
+  </body>
+</html>
